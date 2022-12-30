@@ -1,5 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allocate Dynamic Memory in WebAssembly with Malloc</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-light.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Allocate Dynamic Memory in WebAssembly with Malloc</h1>
+  <pre><code class="language-c">
+#include &lt;stdlib.h&gt;
+
+struct Record {
+  int id;
+  float x;
+  float y;
+};
+
+struct Record* createRecord (int id, float x, float y) {
+  struct Record* record = malloc(sizeof(struct Record));
+  record->id = id;
+  record->x = x;
+  record->y = y;
+  return record;
+}
+
+void deleteRecord (struct Record* record) {
+  free(record);
+}
+  </code></pre>
   <script>
+    hljs.initHighlightingOnLoad();
     function fetchAndCompileWasmModules (urls) {
       return Promise.all(urls.map(url => {
         return fetch(url)
@@ -37,3 +70,5 @@
       });
     });
   </script>
+</body>
+</html>

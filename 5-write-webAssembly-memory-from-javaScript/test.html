@@ -1,6 +1,38 @@
-<!doctype html>
-  <title>WASM Test</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write to WebAssembly Memory from JavaScript</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-light.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Write to WebAssembly Memory from JavaScript</h1>
+  <pre><code class="language-c">
+void consoleLog (char* offset, int len);
+
+char inStr[20];
+char outStr[20];
+
+char* getInStrOffset () {
+  return &inStr[0];
+}
+
+void toLowerCase () {
+  for (int i = 0; i < 20; i++) {
+    char c = inStr[i];
+    if (c > 64 && c < 91) {
+      c = c + 32;
+    }
+    outStr[i] = c;
+  }
+  consoleLog(&outStr[0], 20);
+}
+  </code></pre>
   <script>
+    hljs.initHighlightingOnLoad();
     function fetchAndInstantiateWasm (url, imports) {
       return fetch(url)
       .then(res => {
@@ -35,3 +67,5 @@
       m.toLowerCase();
     });
   </script>
+</body>
+</html>

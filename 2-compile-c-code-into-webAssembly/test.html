@@ -1,6 +1,24 @@
-<!doctype html>
-  <title>WASM Test</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compile C Code into WebAssembly</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-light.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Compile C Code into WebAssembly</h1>
+  <pre><code class="language-c">
+#include &lt;math.h&gt;
+
+float getSqrt (float num) {
+  return sqrt(num);
+}
+  </code></pre>
   <script>
+    hljs.initHighlightingOnLoad();
     function fetchAndInstantiateWasm (url, imports) {
       return fetch(url)
       .then(res => {
@@ -18,3 +36,5 @@
       window.getSqrt = m.getSqrt;
     });
   </script>
+</body>
+</html>

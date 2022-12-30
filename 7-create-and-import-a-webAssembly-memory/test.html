@@ -1,5 +1,54 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create and Import a WebAssembly Memory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-light.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Create and Import a WebAssembly Memory</h1>
+  <pre><code>
+(module
+  (type $FUNCSIG$ii (func (param i32) (result i32)))
+  (type $FUNCSIG$vi (func (param i32)))
+  (import "env" "memory" (memory $mem 1))
+  (import "env" "free" (func $free (param i32)))
+  (import "env" "malloc" (func $malloc (param i32) (result i32)))
+  (table 0 anyfunc)
+  (export "createRecord" (func $createRecord))
+  (export "deleteRecord" (func $deleteRecord))
+  (func $createRecord (param $0 i32) (param $1 f32) (param $2 f32) (result i32)
+    (local $3 i32)
+    (f32.store offset=4
+      (tee_local $3
+        (call $malloc
+          (i32.const 12)
+        )
+      )
+      (get_local $1)
+    )
+    (i32.store
+      (get_local $3)
+      (get_local $0)
+    )
+    (f32.store offset=8
+      (get_local $3)
+      (get_local $2)
+    )
+    (get_local $3)
+  )
+  (func $deleteRecord (param $0 i32)
+    (call $free
+      (get_local $0)
+    )
+  )
+)
+  </code></pre>
   <script>
+    hljs.initHighlightingOnLoad();
     function fetchAndCompileWasmModules (urls) {
       return Promise.all(urls.map(url => {
         return fetch(url)
@@ -34,3 +83,5 @@
       });
     });
   </script>
+</body>
+</html>
